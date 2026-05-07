@@ -7,7 +7,7 @@
     <title>施設利用者バースデー計画 | Kaigo Birthday Planner</title>
     
     <style>
-        /* --- PETUNJUK KUSTOMISASI WARNA --- */
+        /* --- VARIABLE DASAR (LIGHT MODE) --- */
         :root {
             --primary: #4a90e2;
             --accent: #ff7675;
@@ -19,16 +19,14 @@
             --footer-text: #b2bec3;
         }
 
-        /* --- FITUR DARK MODE --- */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #1a1a1b;
-                --card-bg: #2d2d2e;
-                --text-main: #f8f9fa;
-                --text-sub: #b2bec3;
-                --border: #3d3d3e;
-                --footer-text: #636e72;
-            }
+        /* --- VARIABLE DARK MODE --- */
+        .dark-mode {
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #f1f1f1;
+            --text-sub: #cccccc;
+            --border: #333333;
+            --footer-text: #888888;
         }
 
         * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
@@ -55,59 +53,82 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
             text-align: center;
             margin-top: 20px;
-            flex: 1; /* Memastikan container mengambil ruang yang tersedia */
+            flex: 1;
         }
 
         @media (min-width: 600px) { .container { padding: 40px; } }
 
-        h1 { font-size: clamp(1.2rem, 5vw, 1.8rem); color: var(--text-main); border-bottom: 3px solid var(--accent); display: inline-block; padding-bottom: 5px; margin-bottom: 20px; }
+        h1 { font-size: clamp(1.2rem, 5vw, 1.8rem); color: var(--text-main); border-bottom: 3px solid var(--accent); display: inline-block; padding-bottom: 5px; margin-bottom: 10px; }
         
+        .theme-btn {
+            margin-top: 15px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
         .greeting-box { background: rgba(255, 118, 117, 0.1); padding: 20px; border-radius: 15px; margin: 20px 0; border: 2px dashed var(--accent); }
         .celebration-text { font-size: clamp(1.1rem, 4vw, 1.5rem); font-weight: bold; color: var(--accent); }
 
         .hidden { display: none; }
 
+        /* SCROLLDROPDOWN STYLES */
+        .birth-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px auto;
+        }
+        
+        select {
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-size: 1rem;
+            min-width: 80px;
+            cursor: pointer;
+        }
+
+        input[type="text"], .primary-btn { 
+            padding: 12px 15px; 
+            border-radius: 10px; 
+            border: 1px solid var(--border); 
+            font-size: 1rem; 
+            width: 100%; 
+            max-width: 300px; 
+            margin: 10px auto; 
+            display: block; 
+            background: var(--card-bg); 
+            color: var(--text-main); 
+        }
+
+        .primary-btn { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: bold; width: auto; min-width: 200px; }
+        .btn-reset { background-color: var(--text-sub); margin-top: 30px; }
+
+        /* Grid System */
         .grid-container { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
             gap: 15px; 
             margin-top: 20px; 
         }
-
         @media (min-width: 480px) { .grid-container { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; } }
 
-        .option-card { 
-            border: 1px solid var(--border); 
-            border-radius: 15px; 
-            overflow: hidden; 
-            cursor: pointer; 
-            background: var(--card-bg);
-            display: flex;
-            flex-direction: column;
-        }
-
+        .option-card { border: 1px solid var(--border); border-radius: 15px; overflow: hidden; cursor: pointer; background: var(--card-bg); display: flex; flex-direction: column; }
         .option-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); border-color: var(--accent); }
-        
         .img-container { width: 100%; aspect-ratio: 3 / 4; overflow: hidden; background: #eee; }
         .img-container img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .card-text { padding: 12px; font-weight: bold; font-size: 0.95rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+        .card-text { padding: 12px; font-weight: bold; font-size: 0.95rem; }
         .translation { display: block; font-size: 0.8rem; color: var(--text-sub); font-weight: normal; margin-top: 4px; }
 
-        input, button { padding: 12px 15px; border-radius: 10px; border: 1px solid var(--border); font-size: 1rem; width: 100%; max-width: 300px; margin: 10px auto; display: block; background: var(--card-bg); color: var(--text-main); }
-        button { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; width: auto; min-width: 200px; }
-        button:hover { filter: brightness(1.1); }
-        
-        .btn-reset { background-color: var(--text-sub); margin-top: 30px; }
-
-        /* FOOTER CREDIT */
-        footer {
-            margin-top: 40px;
-            padding: 20px;
-            font-size: 0.8rem;
-            color: var(--footer-text);
-            text-align: center;
-        }
+        footer { margin-top: 40px; padding: 20px; font-size: 0.8rem; color: var(--footer-text); text-align: center; }
     </style>
 </head>
 <body>
@@ -115,15 +136,34 @@
 <div class="container" id="app">
     <header>
         <h1>🎈 お誕生日行事パネル</h1>
+        <br>
+        <button id="themeToggle" class="theme-btn">🌙 Dark Mode</button>
     </header>
     
+    <!-- STEP 1: Input Data dengan Sistem Scroll (Dropdown) -->
     <section id="step1">
         <p>情報を入力してください <span class="translation">(Masukkan informasi pasien)</span></p>
         <input type="text" id="patientName" placeholder="お名前 (Nama)">
-        <input type="date" id="birthDate">
-        <button onclick="startPlanning()">お祝いを始める</button>
+        
+        <div class="birth-inputs">
+            <div>
+                <label>年</label><br>
+                <select id="birthYear"></select>
+            </div>
+            <div>
+                <label>月</label><br>
+                <select id="birthMonth"></select>
+            </div>
+            <div>
+                <label>日</label><br>
+                <select id="birthDay"></select>
+            </div>
+        </div>
+        
+        <button class="primary-btn" onclick="startPlanning()">お祝いを始める</button>
     </section>
 
+    <!-- STEP 2 -->
     <section id="step2" class="hidden">
         <div class="greeting-box">
             <div id="birthdayGreeting" class="celebration-text"></div>
@@ -141,6 +181,7 @@
         </div>
     </section>
 
+    <!-- STEP 3 -->
     <section id="step3" class="hidden">
         <h2>どちらの味がよろしいですか？<br><span class="translation">Mau rasa yang mana?</span></h2>
         <div class="grid-container">
@@ -153,21 +194,23 @@
                 <div class="card-text">塩味・肉料理 <div class="translation">Asin / Daging</div></div>
             </div>
         </div>
-        <button onclick="nextStep(2)" class="btn-reset">戻る</button>
+        <button onclick="nextStep(2)" class="primary-btn btn-reset">戻る</button>
     </section>
 
+    <!-- STEP 4 -->
     <section id="step4" class="hidden">
         <h2 id="menuTitle"></h2>
         <div id="menuOptions" class="grid-container"></div>
-        <button class="btn-reset" onclick="location.reload()">トップに戻る</button>
+        <button class="primary-btn btn-reset" onclick="location.reload()">トップに戻る</button>
     </section>
 
+    <!-- STEP 5 -->
     <section id="step5" class="hidden">
         <div class="greeting-box">
             <div id="finalMessage" class="celebration-text" style="color: #2ecc71;"></div>
             <p id="subMessage"></p>
         </div>
-        <button class="btn-reset" onclick="location.reload()">完了 (Selesai)</button>
+        <button class="primary-btn btn-reset" onclick="location.reload()">完了 (Selesai)</button>
     </section>
 </div>
 
@@ -176,10 +219,7 @@
 </footer>
 
 <script>
-    /* 
-       --- PETUNJUK MENGUBAH GAMBAR MANUAL ---
-       Ganti URL di bagian 'img' di bawah ini untuk mengubah gambar tiap menu.
-    */
+    // DATA MENU
     const data = {
         savory: [
             { jp: "寿司盛り合わせ", id: "Set Sushi", img: "https://img.freepik.com/free-vector/sushi-set-concept-illustration_114360-16347.jpg", msg: "新鮮な魚でお祝いしましょう！" },
@@ -205,21 +245,54 @@
         ]
     };
 
-    function calculateAge(birthDate) {
+    // GENERATE DROPDOWN OPTIONS SECARA OTOMATIS
+    window.onload = function() {
+        const yearSelect = document.getElementById('birthYear');
+        const monthSelect = document.getElementById('birthMonth');
+        const daySelect = document.getElementById('birthDay');
+
+        // Tahun (dari 1920 sampai tahun sekarang)
+        const currentYear = new Date().getFullYear();
+        for (let i = currentYear; i >= 1920; i--) {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.innerHTML = i;
+            yearSelect.appendChild(opt);
+        }
+
+        // Bulan (1-12)
+        for (let i = 1; i <= 12; i++) {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.innerHTML = i;
+            monthSelect.appendChild(opt);
+        }
+
+        // Tanggal (1-31)
+        for (let i = 1; i <= 31; i++) {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.innerHTML = i;
+            daySelect.appendChild(opt);
+        }
+    };
+
+    function calculateAge(year, month, day) {
         const today = new Date();
-        const birth = new Date(birthDate);
-        let age = today.getFullYear() - birth.getFullYear();
-        const m = today.getMonth() - birth.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) { age--; }
+        const birthDate = new Date(year, month - 1, day);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) { age--; }
         return age;
     }
 
     function startPlanning() {
         const name = document.getElementById('patientName').value || "利用者";
-        const bDay = document.getElementById('birthDate').value;
-        if(!bDay) return alert("日付を入力してください");
+        const year = document.getElementById('birthYear').value;
+        const month = document.getElementById('birthMonth').value;
+        const day = document.getElementById('birthDay').value;
         
-        const age = calculateAge(bDay);
+        const age = calculateAge(year, month, day);
         document.getElementById('birthdayGreeting').innerHTML = 
             `🎂 お誕生日おめでとうございます、${name}様！<br>祝 ${age}歳`;
         
@@ -264,6 +337,25 @@
         document.getElementById('subMessage').innerHTML = 
             `${item.msg}<br><br><span class="translation">Sudah diputuskan: ${item.id}.<br>Mari kita rayakan bersama!</span>`;
     }
+
+    // DARK MODE LOGIC
+    const toggleBtn = document.getElementById('themeToggle');
+    function setTheme(mode){
+        if(mode === 'dark'){
+            document.body.classList.add('dark-mode');
+            toggleBtn.innerHTML = '☀️ Light Mode';
+        } else {
+            document.body.classList.remove('dark-mode');
+            toggleBtn.innerHTML = '🌙 Dark Mode';
+        }
+        localStorage.setItem('theme', mode);
+    }
+    toggleBtn.addEventListener('click', () => {
+        const isDark = document.body.classList.contains('dark-mode');
+        setTheme(isDark ? 'light' : 'dark');
+    });
+    const savedTheme = localStorage.getItem('theme');
+    if(savedTheme) setTheme(savedTheme);
 </script>
 
 </body>
