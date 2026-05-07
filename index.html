@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kaigo Birthday Planner - Panel Interaktif Perayaan Ulang Tahun Pasien">
+    <title>施設利用者バースデー計画 | Kaigo Birthday Planner</title>
+    
+    <style>
+        /* --- PETUNJUK KUSTOMISASI WARNA --- */
+        :root {
+            --primary: #4a90e2;
+            --accent: #ff7675;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --text-sub: #636e72;
+            --border: #dfe6e9;
+            --footer-text: #b2bec3;
+        }
+
+        /* --- FITUR DARK MODE --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #1a1a1b;
+                --card-bg: #2d2d2e;
+                --text-main: #f8f9fa;
+                --text-sub: #b2bec3;
+                --border: #3d3d3e;
+                --footer-text: #636e72;
+            }
+        }
+
+        * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        
+        body { 
+            font-family: 'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif; 
+            background-color: var(--bg); 
+            margin: 0; 
+            padding: 10px; 
+            color: var(--text-main); 
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container { 
+            width: 100%;
+            max-width: 900px; 
+            background: var(--card-bg); 
+            padding: 20px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            text-align: center;
+            margin-top: 20px;
+            flex: 1; /* Memastikan container mengambil ruang yang tersedia */
+        }
+
+        @media (min-width: 600px) { .container { padding: 40px; } }
+
+        h1 { font-size: clamp(1.2rem, 5vw, 1.8rem); color: var(--text-main); border-bottom: 3px solid var(--accent); display: inline-block; padding-bottom: 5px; margin-bottom: 20px; }
+        
+        .greeting-box { background: rgba(255, 118, 117, 0.1); padding: 20px; border-radius: 15px; margin: 20px 0; border: 2px dashed var(--accent); }
+        .celebration-text { font-size: clamp(1.1rem, 4vw, 1.5rem); font-weight: bold; color: var(--accent); }
+
+        .hidden { display: none; }
+
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+            gap: 15px; 
+            margin-top: 20px; 
+        }
+
+        @media (min-width: 480px) { .grid-container { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; } }
+
+        .option-card { 
+            border: 1px solid var(--border); 
+            border-radius: 15px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            background: var(--card-bg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); border-color: var(--accent); }
+        
+        .img-container { width: 100%; aspect-ratio: 3 / 4; overflow: hidden; background: #eee; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .card-text { padding: 12px; font-weight: bold; font-size: 0.95rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+        .translation { display: block; font-size: 0.8rem; color: var(--text-sub); font-weight: normal; margin-top: 4px; }
+
+        input, button { padding: 12px 15px; border-radius: 10px; border: 1px solid var(--border); font-size: 1rem; width: 100%; max-width: 300px; margin: 10px auto; display: block; background: var(--card-bg); color: var(--text-main); }
+        button { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; width: auto; min-width: 200px; }
+        button:hover { filter: brightness(1.1); }
+        
+        .btn-reset { background-color: var(--text-sub); margin-top: 30px; }
+
+        /* FOOTER CREDIT */
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.8rem;
+            color: var(--footer-text);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app">
+    <header>
+        <h1>🎈 お誕生日行事パネル</h1>
+    </header>
+    
+    <section id="step1">
+        <p>情報を入力してください <span class="translation">(Masukkan informasi pasien)</span></p>
+        <input type="text" id="patientName" placeholder="お名前 (Nama)">
+        <input type="date" id="birthDate">
+        <button onclick="startPlanning()">お祝いを始める</button>
+    </section>
+
+    <section id="step2" class="hidden">
+        <div class="greeting-box">
+            <div id="birthdayGreeting" class="celebration-text"></div>
+            <p>今日は特別な日です！何をしましょうか？<br><span class="translation">Hari ini hari spesial! Apa yang ingin dilakukan?</span></p>
+        </div>
+        <div class="grid-container">
+            <div class="option-card" onclick="nextStep(3)">
+                <div class="img-container"><img src="https://img.freepik.com/free-vector/hand-drawn-japanese-food-illustration_23-2149202715.jpg" alt="Makan"></div>
+                <div class="card-text">お食事会 <div class="translation">Makan Bersama</div></div>
+            </div>
+            <div class="option-card" onclick="showWalkingMenu()">
+                <div class="img-container"><img src="https://img.freepik.com/free-vector/shrine-concept-illustration_114360-11234.jpg" alt="Jalan-jalan"></div>
+                <div class="card-text">外出・散歩 <div class="translation">Jalan-jalan</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="step3" class="hidden">
+        <h2>どちらの味がよろしいですか？<br><span class="translation">Mau rasa yang mana?</span></h2>
+        <div class="grid-container">
+            <div class="option-card" onclick="showFoodMenu('sweet')">
+                <div class="img-container"><img src="https://img.freepik.com/free-vector/hand-drawn-cupcake-illustration_23-2149150170.jpg" alt="Manis"></div>
+                <div class="card-text">甘味 <div class="translation">Manis</div></div>
+            </div>
+            <div class="option-card" onclick="showFoodMenu('savory')">
+                <div class="img-container"><img src="https://img.freepik.com/free-vector/traditional-japanese-cuisine-temaki-sushi-concept-illustration_114360-15509.jpg" alt="Asin"></div>
+                <div class="card-text">塩味・肉料理 <div class="translation">Asin / Daging</div></div>
+            </div>
+        </div>
+        <button onclick="nextStep(2)" class="btn-reset">戻る</button>
+    </section>
+
+    <section id="step4" class="hidden">
+        <h2 id="menuTitle"></h2>
+        <div id="menuOptions" class="grid-container"></div>
+        <button class="btn-reset" onclick="location.reload()">トップに戻る</button>
+    </section>
+
+    <section id="step5" class="hidden">
+        <div class="greeting-box">
+            <div id="finalMessage" class="celebration-text" style="color: #2ecc71;"></div>
+            <p id="subMessage"></p>
+        </div>
+        <button class="btn-reset" onclick="location.reload()">完了 (Selesai)</button>
+    </section>
+</div>
+
+<footer>
+    Created by ハルダ (Haruda) &copy; 2026
+</footer>
+
+<script>
+    /* 
+       --- PETUNJUK MENGUBAH GAMBAR MANUAL ---
+       Ganti URL di bagian 'img' di bawah ini untuk mengubah gambar tiap menu.
+    */
+    const data = {
+        savory: [
+            { jp: "寿司盛り合わせ", id: "Set Sushi", img: "https://img.freepik.com/free-vector/sushi-set-concept-illustration_114360-16347.jpg", msg: "新鮮な魚でお祝いしましょう！" },
+            { jp: "ハンバーグ", id: "Hambagu", img: "https://img.freepik.com/free-vector/hand-drawn-delicious-salisbury-steak-illustration_23-2149176461.jpg", msg: "ジューシーなお肉を楽しみましょう！" },
+            { jp: "鶏の唐揚げ", id: "Karaage", img: "https://img.freepik.com/free-vector/hand-drawn-fried-chicken-illustration_23-2149202166.jpg", msg: "アツアツの唐揚げは最高です！" },
+            { jp: "焼肉", id: "Yakiniku", img: "https://img.freepik.com/free-vector/japanese-cuisine-concept-illustration_114360-13454.jpg", msg: "スタミナをつけて元気になりましょう！" },
+            { jp: "うな重", id: "Unagi", img: "https://img.freepik.com/free-vector/flat-hand-drawn-japanese-food-illustration_23-2148866763.jpg", msg: "贅沢なうなぎで特別な日に！" },
+            { jp: "天ぷら", id: "Tempura", img: "https://img.freepik.com/free-vector/hand-drawn-tempura-illustration_23-2149195977.jpg", msg: "サクサクの天ぷらを召し上がれ！" }
+        ],
+        sweet: [
+            { jp: "ショートケーキ", id: "Cake", img: "https://img.freepik.com/free-vector/hand-drawn-strawberry-cake-illustration_23-2149150176.jpg", msg: "甘いケーキで幸せなひとときを！" },
+            { jp: "プリン", id: "Pudding", img: "https://img.freepik.com/free-vector/hand-drawn-pudding-illustration_23-2149150168.jpg", msg: "とろけるプリンでお祝いです！" },
+            { jp: "和菓子", id: "Wagashi", img: "https://img.freepik.com/free-vector/flat-design-japanese-mochi-illustration_23-2148867201.jpg", msg: "上品な甘さの和菓子をどうぞ。" },
+            { jp: "抹茶アイス", id: "Matcha Ice", img: "https://img.freepik.com/free-vector/matcha-dessert-concept-illustration_114360-12850.jpg", msg: "さっぱりした抹茶を楽しみましょう！" },
+            { jp: "フルーツ", id: "Fruit", img: "https://img.freepik.com/free-vector/fruit-composition-concept-illustration_114360-10116.jpg", msg: "ビタミンたっぷりのフルーツです！" },
+            { jp: "どら焼き", id: "Dorayaki", img: "https://img.freepik.com/free-vector/hand-drawn-japanese-dessert-illustration_23-2149202720.jpg", msg: "美味しいどら焼きでお茶にしましょう！" }
+        ],
+        walking: [
+            { jp: "公園の散歩", id: "Taman", img: "https://img.freepik.com/free-vector/city-park-concept-illustration_114360-1123.jpg", msg: "外の空気を吸ってリフレッシュ！" },
+            { jp: "神社参拝", id: "Kuil", img: "https://img.freepik.com/free-vector/torii-gate-concept-illustration_114360-12345.jpg", msg: "健康と幸せをお祈りしましょう。" },
+            { jp: "ドライブ", id: "Drive", img: "https://img.freepik.com/free-vector/happy-family-driving-car-concept-illustration_114360-10156.jpg", msg: "車窓からの景色を楽しみましょう！" },
+            { jp: "ショッピング", id: "Belanja", img: "https://img.freepik.com/free-vector/shopping-mall-concept-illustration_114360-1413.jpg", msg: "お買い物を楽しみましょう！" }
+        ]
+    };
+
+    function calculateAge(birthDate) {
+        const today = new Date();
+        const birth = new Date(birthDate);
+        let age = today.getFullYear() - birth.getFullYear();
+        const m = today.getMonth() - birth.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) { age--; }
+        return age;
+    }
+
+    function startPlanning() {
+        const name = document.getElementById('patientName').value || "利用者";
+        const bDay = document.getElementById('birthDate').value;
+        if(!bDay) return alert("日付を入力してください");
+        
+        const age = calculateAge(bDay);
+        document.getElementById('birthdayGreeting').innerHTML = 
+            `🎂 お誕生日おめでとうございます、${name}様！<br>祝 ${age}歳`;
+        
+        nextStep(2);
+    }
+
+    function nextStep(step) {
+        document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
+        document.getElementById('step' + step).classList.remove('hidden');
+        window.scrollTo(0,0);
+    }
+
+    function showFoodMenu(type) {
+        nextStep(4);
+        renderOptions(data[type], "お好きなものを選んでください");
+    }
+
+    function showWalkingMenu() {
+        nextStep(4);
+        renderOptions(data.walking, "どこに行きたいですか？");
+    }
+
+    function renderOptions(items, title) {
+        const container = document.getElementById('menuOptions');
+        document.getElementById('menuTitle').innerText = title;
+        container.innerHTML = '';
+        items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'option-card';
+            card.onclick = () => finishSelection(item);
+            card.innerHTML = `
+                <div class="img-container"><img src="${item.img}" alt="${item.jp}"></div>
+                <div class="card-text">${item.jp}<span class="translation">${item.id}</span></div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function finishSelection(item) {
+        nextStep(5);
+        document.getElementById('finalMessage').innerHTML = `✨ ${item.jp}に決定しました！ ✨`;
+        document.getElementById('subMessage').innerHTML = 
+            `${item.msg}<br><br><span class="translation">Sudah diputuskan: ${item.id}.<br>Mari kita rayakan bersama!</span>`;
+    }
+</script>
+
+</body>
+</html>
