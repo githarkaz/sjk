@@ -7,7 +7,6 @@
     <title>施設利用者バースデー計画 | Kaigo Birthday Planner</title>
     
     <style>
-        /* --- VARIABLE DASAR (LIGHT MODE) --- */
         :root {
             --primary: #4a90e2;
             --accent: #ff7675;
@@ -19,7 +18,6 @@
             --footer-text: #b2bec3;
         }
 
-        /* --- VARIABLE DARK MODE --- */
         .dark-mode {
             --bg: #121212;
             --card-bg: #1e1e1e;
@@ -76,7 +74,6 @@
 
         .hidden { display: none; }
 
-        /* SCROLLDROPDOWN STYLES */
         .birth-inputs {
             display: flex;
             gap: 10px;
@@ -109,10 +106,9 @@
             color: var(--text-main); 
         }
 
-        .primary-btn { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: bold; width: auto; min-width: 200px; }
-        .btn-reset { background-color: var(--text-sub); margin-top: 30px; }
+        .primary-btn { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: bold; width: auto; min-width: 180px; }
+        .btn-secondary { background-color: var(--text-sub); margin-top: 20px; }
 
-        /* Grid System */
         .grid-container { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
@@ -140,30 +136,19 @@
         <button id="themeToggle" class="theme-btn">🌙 Dark Mode</button>
     </header>
     
-    <!-- STEP 1: Input Data dengan Sistem Scroll (Dropdown) -->
+    <!-- STEP 1 -->
     <section id="step1">
         <p>情報を入力してください <span class="translation">(Masukkan informasi pasien)</span></p>
         <input type="text" id="patientName" placeholder="お名前 (Nama)">
-        
         <div class="birth-inputs">
-            <div>
-                <label>年</label><br>
-                <select id="birthYear"></select>
-            </div>
-            <div>
-                <label>月</label><br>
-                <select id="birthMonth"></select>
-            </div>
-            <div>
-                <label>日</label><br>
-                <select id="birthDay"></select>
-            </div>
+            <div><label>年</label><br><select id="birthYear"></select></div>
+            <div><label>月</label><br><select id="birthMonth"></select></div>
+            <div><label>日</label><br><select id="birthDay"></select></div>
         </div>
-        
         <button class="primary-btn" onclick="startPlanning()">お祝いを始める</button>
     </section>
 
-    <!-- STEP 2 -->
+    <!-- STEP 2: Main Menu -->
     <section id="step2" class="hidden">
         <div class="greeting-box">
             <div id="birthdayGreeting" class="celebration-text"></div>
@@ -171,14 +156,20 @@
         </div>
         <div class="grid-container">
             <div class="option-card" onclick="nextStep(3)">
-                <div class="img-container"><img src="https://img.freepik.com/free-vector/hand-drawn-japanese-food-illustration_23-2149202715.jpg" alt="Makan"></div>
+                <div class="img-container"><img src="https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&h=533&fit=crop" alt="Food"></div>
                 <div class="card-text">お食事会 <div class="translation">Makan Bersama</div></div>
             </div>
             <div class="option-card" onclick="showWalkingMenu()">
-                <div class="img-container"><img src="https://img.freepik.com/free-vector/shrine-concept-illustration_114360-11234.jpg" alt="Jalan-jalan"></div>
+                <div class="img-container"><img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&h=533&fit=crop" alt="Walk"></div>
                 <div class="card-text">外出・散歩 <div class="translation">Jalan-jalan</div></div>
             </div>
+            <!-- LINK OYATSU YANG SUDAH DIUBAH DI BAWAH INI -->
+            <div class="option-card" onclick="finishSelection({jp:'おやつタイム', id:'Waktu Camilan (Oyatsu)', msg:'美味しいおやつを食べて、のんびり過ごしましょう！'})">
+                <div class="img-container"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEglad5gWphB0T68eOrY25uTsDEVdajnKQO59b4NbVsHwoH4w2I-TqgFy-bZHxmA8j2Lv225vS_haALJdtwOYvuvVgBMiugrUk8Be4eDjBqCRY60uHxuUlEfdbtriB-bQnpzUJaY7w6heRyYDsvtYuYvAF_Me_HAVvPbRx2HeKZ_l4FbVR689o2nUwFDuOA/s1600/oyatsu.jpg" alt="Oyatsu"></div>
+                <div class="card-text">おやつ <div class="translation">Camilan (Oyatsu)</div></div>
+            </div>
         </div>
+        <button class="primary-btn btn-secondary" onclick="nextStep(1)">戻る (Kembali)</button>
     </section>
 
     <!-- STEP 3 -->
@@ -186,22 +177,22 @@
         <h2>どちらの味がよろしいですか？<br><span class="translation">Mau rasa yang mana?</span></h2>
         <div class="grid-container">
             <div class="option-card" onclick="showFoodMenu('sweet')">
-                <div class="img-container"><img src="https://img.freepik.com/free-vector/hand-drawn-cupcake-illustration_23-2149150170.jpg" alt="Manis"></div>
+                <div class="img-container"><img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&h=533&fit=crop" alt="Sweet"></div>
                 <div class="card-text">甘味 <div class="translation">Manis</div></div>
             </div>
             <div class="option-card" onclick="showFoodMenu('savory')">
-                <div class="img-container"><img src="https://img.freepik.com/free-vector/traditional-japanese-cuisine-temaki-sushi-concept-illustration_114360-15509.jpg" alt="Asin"></div>
+                <div class="img-container"><img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=533&fit=crop" alt="Savory"></div>
                 <div class="card-text">塩味・肉料理 <div class="translation">Asin / Daging</div></div>
             </div>
         </div>
-        <button onclick="nextStep(2)" class="primary-btn btn-reset">戻る</button>
+        <button class="primary-btn btn-secondary" onclick="nextStep(2)">戻る (Kembali)</button>
     </section>
 
     <!-- STEP 4 -->
     <section id="step4" class="hidden">
         <h2 id="menuTitle"></h2>
         <div id="menuOptions" class="grid-container"></div>
-        <button class="primary-btn btn-reset" onclick="location.reload()">トップに戻る</button>
+        <button id="backToSpecific" class="primary-btn btn-secondary">戻る (Kembali)</button>
     </section>
 
     <!-- STEP 5 -->
@@ -210,7 +201,7 @@
             <div id="finalMessage" class="celebration-text" style="color: #2ecc71;"></div>
             <p id="subMessage"></p>
         </div>
-        <button class="primary-btn btn-reset" onclick="location.reload()">完了 (Selesai)</button>
+        <button class="primary-btn btn-secondary" onclick="location.reload()">トップに戻る (Ke Awal)</button>
     </section>
 </div>
 
@@ -219,62 +210,39 @@
 </footer>
 
 <script>
-    // DATA MENU
     const data = {
         savory: [
-            { jp: "寿司盛り合わせ", id: "Set Sushi", img: "https://raw.githubusercontent.com/githarkaz/sjk/refs/heads/main/images/sushi.jpg", msg: "新鮮な魚でお祝いしましょう！" },
-            { jp: "ハンバーグ", id: "Hambagu", img: "https://img.freepik.com/free-vector/hand-drawn-delicious-salisbury-steak-illustration_23-2149176461.jpg", msg: "ジューシーなお肉を楽しみましょう！" },
-            { jp: "鶏の唐揚げ", id: "Karaage", img: "https://img.freepik.com/free-vector/hand-drawn-fried-chicken-illustration_23-2149202166.jpg", msg: "アツアツの唐揚げは最高です！" },
-            { jp: "焼肉", id: "Yakiniku", img: "https://img.freepik.com/free-vector/japanese-cuisine-concept-illustration_114360-13454.jpg", msg: "スタミナをつけて元気になりましょう！" },
-            { jp: "うな重", id: "Unagi", img: "https://img.freepik.com/free-vector/flat-hand-drawn-japanese-food-illustration_23-2148866763.jpg", msg: "贅沢なうなぎで特別な日に！" },
-            { jp: "天ぷら", id: "Tempura", img: "https://img.freepik.com/free-vector/hand-drawn-tempura-illustration_23-2149195977.jpg", msg: "サクサクの天ぷらを召し上がれ！" }
+            { jp: "寿司盛り合わせ", id: "Set Sushi", img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=533&fit=crop", msg: "新鮮な魚でお祝いしましょう！" },
+            { jp: "ハンバーグ", id: "Hambagu", img: "https://www.justonecookbook.com/wp-content/uploads/2020/06/Japanese-Hamburger-Steak-Hambagu-1214-I-1.jpg", msg: "ジューシーなお肉を楽しみましょう！" },
+            { jp: "鶏の唐揚げ", id: "Karaage", img: "https://images.unsplash.com/photo-1562967914-608f82629710?w=400&h=533&fit=crop", msg: "アツアツの唐揚げは最高です！" },
+            { jp: "焼肉", id: "Yakiniku", img: "https://byfood.b-cdn.net/api/public/assets/43944/content?optimizer=image", msg: "スタミナをつけて元気になりましょう！" },
+            { jp: "うな重", id: "Unagi", img: "https://static.japan-food.guide/uploads/article/cover_image/000/000/011/ec520e58373b47f08d80c94b34bce8a460d4af693c15a8e951f07efd3e0b392b/eye_catch_unaju_rice_topped_with_unagi_.jpg?1764652916", msg: "贅沢なうなぎで特別な日に！" },
+            { jp: "天ぷら", id: "Tempura", img: "https://www.eatsomethingsexy.com/wp-content/uploads/2020/12/shrimp-tempura.jpg", msg: "サクサクの天ぷらを召し上がれ！" }
         ],
         sweet: [
-            { jp: "ショートケーキ", id: "Cake", img: "https://img.freepik.com/free-vector/hand-drawn-strawberry-cake-illustration_23-2149150176.jpg", msg: "甘いケーキで幸せなひとときを！" },
-            { jp: "プリン", id: "Pudding", img: "https://img.freepik.com/free-vector/hand-drawn-pudding-illustration_23-2149150168.jpg", msg: "とろけるプリンでお祝いです！" },
-            { jp: "和菓子", id: "Wagashi", img: "https://img.freepik.com/free-vector/flat-design-japanese-mochi-illustration_23-2148867201.jpg", msg: "上品な甘さの和菓子をどうぞ。" },
-            { jp: "抹茶アイス", id: "Matcha Ice", img: "https://img.freepik.com/free-vector/matcha-dessert-concept-illustration_114360-12850.jpg", msg: "さっぱりした抹茶を楽しみましょう！" },
-            { jp: "フルーツ", id: "Fruit", img: "https://img.freepik.com/free-vector/fruit-composition-concept-illustration_114360-10116.jpg", msg: "ビタミンたっぷりのフルーツです！" },
-            { jp: "どら焼き", id: "Dorayaki", img: "https://img.freepik.com/free-vector/hand-drawn-japanese-dessert-illustration_23-2149202720.jpg", msg: "美味しいどら焼きでお茶にしましょう！" }
+            { jp: "ショートケーキ", id: "Cake", img: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=533&fit=crop", msg: "甘いケーキで幸せなひとときを！" },
+            { jp: "プリン", id: "Pudding", img: "https://images.unsplash.com/photo-1528975604071-b4dc52a2d18c?w=400&h=533&fit=crop", msg: "とろけるプリンでお祝いです！" },
+            { jp: "和菓子", id: "Wagashi", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdO3cNBJZm0P1q6VnjI9n1kqGBT_zBmafdMQ&s", msg: "上品な甘さの和菓子 को どうぞ。" },
+            { jp: "抹茶アイス", id: "Matcha Ice", img: "https://www.justonecookbook.com/wp-content/uploads/2021/08/Green-Tea-Ice-Cream-0099-I-1.jpg", msg: "さっぱりした抹茶を楽しみましょう！" },
+            { jp: "フルーツ", id: "Fruit", img: "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=400&h=533&fit=crop", msg: "ビタミンたっぷりのフルーツです！" },
+            { jp: "どら焼き", id: "Dorayaki", img: "https://www.justonecookbook.com/wp-content/uploads/2027/03/Dorayaki-Japanese-Red-Bean-Pancake-3716-I.jpg", msg: "美味しいどら焼きでお茶にしましょう！" }
         ],
         walking: [
-            { jp: "公園の散歩", id: "Taman", img: "https://img.freepik.com/free-vector/city-park-concept-illustration_114360-1123.jpg", msg: "外の空気を吸ってリフレッシュ！" },
-            { jp: "神社参拝", id: "Kuil", img: "https://img.freepik.com/free-vector/torii-gate-concept-illustration_114360-12345.jpg", msg: "健康と幸せをお祈りしましょう。" },
-            { jp: "ドライブ", id: "Drive", img: "https://img.freepik.com/free-vector/happy-family-driving-car-concept-illustration_114360-10156.jpg", msg: "車窓からの景色を楽しみましょう！" },
-            { jp: "ショッピング", id: "Belanja", img: "https://img.freepik.com/free-vector/shopping-mall-concept-illustration_114360-1413.jpg", msg: "お買い物を楽しみましょう！" }
+            { jp: "公園の散歩", id: "Taman", img: "https://blog.klikindomaret.com/wp-content/uploads/2023/06/park-with-trees-grass-sunny-day-scaled.jpg", msg: "外の空気を吸ってリフレッシュ！" },
+            { jp: "神社参拝", id: "Kuil", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&h=533&fit=crop", msg: "健康 dan 幸せをお祈りしましょう。" },
+            { jp: "ドライブ", id: "Drive", img: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&h=533&fit=crop", msg: "車窓からの景色を楽しんでください！" },
+            { jp: "ショッピング", id: "Belanja", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=533&fit=crop", msg: "お買い物を楽しみましょう！" }
         ]
     };
 
-    // GENERATE DROPDOWN OPTIONS SECARA OTOMATIS
     window.onload = function() {
         const yearSelect = document.getElementById('birthYear');
         const monthSelect = document.getElementById('birthMonth');
         const daySelect = document.getElementById('birthDay');
-
-        // Tahun (dari 1920 sampai tahun sekarang)
         const currentYear = new Date().getFullYear();
-        for (let i = currentYear; i >= 1920; i--) {
-            let opt = document.createElement('option');
-            opt.value = i;
-            opt.innerHTML = i;
-            yearSelect.appendChild(opt);
-        }
-
-        // Bulan (1-12)
-        for (let i = 1; i <= 12; i++) {
-            let opt = document.createElement('option');
-            opt.value = i;
-            opt.innerHTML = i;
-            monthSelect.appendChild(opt);
-        }
-
-        // Tanggal (1-31)
-        for (let i = 1; i <= 31; i++) {
-            let opt = document.createElement('option');
-            opt.value = i;
-            opt.innerHTML = i;
-            daySelect.appendChild(opt);
-        }
+        for (let i = currentYear; i >= 1920; i--) { yearSelect.add(new Option(i, i)); }
+        for (let i = 1; i <= 12; i++) { monthSelect.add(new Option(i, i)); }
+        for (let i = 1; i <= 31; i++) { daySelect.add(new Option(i, i)); }
     };
 
     function calculateAge(year, month, day) {
@@ -282,20 +250,14 @@
         const birthDate = new Date(year, month - 1, day);
         let age = today.getFullYear() - birthDate.getFullYear();
         const m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) { age--; }
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
         return age;
     }
 
     function startPlanning() {
         const name = document.getElementById('patientName').value || "利用者";
-        const year = document.getElementById('birthYear').value;
-        const month = document.getElementById('birthMonth').value;
-        const day = document.getElementById('birthDay').value;
-        
-        const age = calculateAge(year, month, day);
-        document.getElementById('birthdayGreeting').innerHTML = 
-            `🎂 お誕生日おめでとうございます、${name}様！<br>祝 ${age}歳`;
-        
+        const age = calculateAge(document.getElementById('birthYear').value, document.getElementById('birthMonth').value, document.getElementById('birthDay').value);
+        document.getElementById('birthdayGreeting').innerHTML = `🎂 お誕生日おめでとうございます、${name}様！<br>祝 ${age}歳`;
         nextStep(2);
     }
 
@@ -305,14 +267,16 @@
         window.scrollTo(0,0);
     }
 
-    function showFoodMenu(type) {
-        nextStep(4);
-        renderOptions(data[type], "お好きなものを選んでください");
+    function showFoodMenu(type) { 
+        nextStep(4); 
+        renderOptions(data[type], "お好きなものを選んでください"); 
+        document.getElementById('backToSpecific').onclick = () => nextStep(3);
     }
-
-    function showWalkingMenu() {
-        nextStep(4);
-        renderOptions(data.walking, "どこに行きたいですか？");
+    
+    function showWalkingMenu() { 
+        nextStep(4); 
+        renderOptions(data.walking, "どこに行きたいですか？"); 
+        document.getElementById('backToSpecific').onclick = () => nextStep(2);
     }
 
     function renderOptions(items, title) {
@@ -323,10 +287,7 @@
             const card = document.createElement('div');
             card.className = 'option-card';
             card.onclick = () => finishSelection(item);
-            card.innerHTML = `
-                <div class="img-container"><img src="${item.img}" alt="${item.jp}"></div>
-                <div class="card-text">${item.jp}<span class="translation">${item.id}</span></div>
-            `;
+            card.innerHTML = `<div class="img-container"><img src="${item.img}" alt="${item.jp}"></div><div class="card-text">${item.jp}<span class="translation">${item.id}</span></div>`;
             container.appendChild(card);
         });
     }
@@ -334,28 +295,17 @@
     function finishSelection(item) {
         nextStep(5);
         document.getElementById('finalMessage').innerHTML = `✨ ${item.jp}に決定しました！ ✨`;
-        document.getElementById('subMessage').innerHTML = 
-            `${item.msg}<br><br><span class="translation">Sudah diputuskan: ${item.id}.<br>Mari kita rayakan bersama!</span>`;
+        document.getElementById('subMessage').innerHTML = `${item.msg}<br><br><span class="translation">Sudah diputuskan: ${item.id}.<br>Mari kita rayakan bersama!</span>`;
     }
 
-    // DARK MODE LOGIC
     const toggleBtn = document.getElementById('themeToggle');
     function setTheme(mode){
-        if(mode === 'dark'){
-            document.body.classList.add('dark-mode');
-            toggleBtn.innerHTML = '☀️ Light Mode';
-        } else {
-            document.body.classList.remove('dark-mode');
-            toggleBtn.innerHTML = '🌙 Dark Mode';
-        }
+        document.body.classList.toggle('dark-mode', mode === 'dark');
+        toggleBtn.innerHTML = mode === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
         localStorage.setItem('theme', mode);
     }
-    toggleBtn.addEventListener('click', () => {
-        const isDark = document.body.classList.contains('dark-mode');
-        setTheme(isDark ? 'light' : 'dark');
-    });
-    const savedTheme = localStorage.getItem('theme');
-    if(savedTheme) setTheme(savedTheme);
+    toggleBtn.addEventListener('click', () => setTheme(document.body.classList.contains('dark-mode') ? 'light' : 'dark'));
+    setTheme(localStorage.getItem('theme') || 'light');
 </script>
 
 </body>
